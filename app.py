@@ -28,13 +28,15 @@ def main():
 
     if uploaded_file is not None:
         # Read PDF file and extract text
-        pdf_reader = PyPDF2.PdfFileReader(uploaded_file)
+        pdf_reader = PyPDF2.PdfReader(uploaded_file)
         resume_text = ""
-        for page_num in range(pdf_reader.numPages):
-            page = pdf_reader.getPage(page_num)
-            resume_text += page.extractText()
         
-        cleaned_resume_text = clean_resume_text(resume_text)
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
+            resume_text += page.extract_text()
+        
+        st.write("Extracted Text from Resume:")
+        st.write(resume_text)
 
         # Process the cleaned resume text for prediction
         input_features = word_vectorizer.transform([cleaned_resume_text])
