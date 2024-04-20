@@ -26,7 +26,7 @@ def main():
         """
         <style>
         body {
-            background-image: url('.jpg');
+            background-image: url('image.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             font-family: Arial, sans-serif;
