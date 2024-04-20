@@ -39,7 +39,7 @@ def main():
         st.write(resume_text)
 
         # Process the cleaned resume text for prediction
-        input_features = word_vectorizer.transform([cleaned_resume_text])
+        input_features = word_vectorizer.transform([resume_text])
 
         # Make prediction using the loaded classifier
         prediction_id = clf.predict(input_features)[0]
