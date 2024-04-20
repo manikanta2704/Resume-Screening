@@ -4,6 +4,8 @@ import re
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+import nltk
+nltk.download('sropeords')
 from nltk.corpus import stopwords
 
 # Function to preprocess text
