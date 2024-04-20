@@ -1,18 +1,11 @@
 import pickle
 import streamlit as st
 import PyPDF2
-import re
-from sklearn.exceptions import NotFittedError
-
-# Load the saved TF-IDF vectorizer and Logistic Regression model
-with open('tfidf.pkl', 'rb') as tfidf_file:
-    tfidf_vectorizer = pickle.load(tfidf_file)
-
-with open('clf.pkl', 'rb') as clf_file:
-    clf = pickle.load(clf_file)
-
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 import re
 
+# Function to preprocess text
 def preprocess_text(text):
     text = re.sub(r'http\S+', '', text)      # Remove URLs
     text = re.sub(r'RT|cc', '', text)        # Remove RT and cc
@@ -23,38 +16,6 @@ def preprocess_text(text):
     text = re.sub(r'\s+', ' ', text)         # Replace multiple spaces with single space
     text = text.strip()                      # Strip leading/trailing whitespace
     return text
-
-# Function to map category ID to category name
-def get_category_name(prediction_id):
-    category_mapping = {
-        15: "Java Developer",
-        23: "Testing",
-        8: "DevOps Engineer",
-        20: "Python Developer",
-        24: "Web Designing",
-        12: "HR",
-        13: "Hadoop",
-        3: "Blockchain",
-        10: "ETL Developer",
-        18: "Operations Manager",
-        6: "Data Science",
-        22: "Sales",
-        16: "Mechanical Engineer",
-        1: "Arts",
-        7: "Database",
-        11: "Electrical Engineering",
-        14: "Health and Fitness",
-        19: "PMO",
-        4: "Business Analyst",
-        9: "DotNet Developer",
-        2: "Automation Testing",
-        17: "Network Security Engineer",
-        21: "SAP Developer",
-        5: "Civil Engineer",
-        0: "Advocate",
-        # Add more category mappings as needed
-    }
-    return category_mapping.get(prediction_id, "Unknown")
 
 # Streamlit app
 def main():
@@ -68,24 +29,31 @@ def main():
         pdf_reader = PyPDF2.PdfReader(uploaded_file)
         resume_text = ""
         
-        for page in pdf_reader.pages:
+        for page_num in range(len(pdf_reader.pages)):
+            page = pdf_reader.pages[page_num]
             resume_text += page.extract_text()
 
         # Preprocess the resume text
         processed_resume_text = preprocess_text(resume_text)
 
-        # Transform the preprocessed text using TF-IDF vectorizer
-        input_features = tfidf_vectorizer.transform([processed_resume_text])
+        # Recreate and fit TF-IDF vectorizer
+        tfidf_vectorizer = TfidfVectorizer()
+        X_train = [processed_resume_text]  # Example: Use your training data here
+        tfidf_vectorizer.fit(X_train)
 
-        try:
-            # Make prediction using the loaded classifier
-            prediction_id = clf.predict(input_features)[0]
-            category_name = get_category_name(prediction_id)
+        # Recreate and fit Logistic Regression model
+        clf = LogisticRegression()
+        y_train = [0]  # Example: Use your training labels here
+        clf.fit(tfidf_vectorizer.transform(X_train), y_train)
 
-            # Display predicted category
-            st.success(f"Predicted Category: {category_name}")
-        except NotFittedError:
-            st.error("Model is not fitted. Please retrain the model and try again.")
+        # Save the models
+        with open('tfidf.pkl', 'wb') as tfidf_file:
+            pickle.dump(tfidf_vectorizer, tfidf_file)
+
+        with open('clf.pkl', 'wb') as clf_file:
+            pickle.dump(clf, clf_file)
+
+        st.success("Models saved successfully!")
 
 if __name__ == '__main__':
     main()
