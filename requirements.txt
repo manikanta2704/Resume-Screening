@@ -109,7 +109,6 @@ pypiwin32==223
 pyppeteer==1.0.2
 python-dateutil==2.8.2
 python-docx==0.8.11
-pywin32==306
 pywinpty==2.0.11
 PyYAML==6.0.1
 pyzmq==25.1.1
