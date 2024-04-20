@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 # Load the trained model and TF-IDF vectorizer
 word_vectorizer = pickle.load(open('tfidf.pkl', 'rb'))
-clf = pickle.load(open('clf.pkl.gz', 'rb'))
+clf = pickle.load(open('clf.pkl.bz2', 'rb'))
 
 # Function to clean resume text
 def clean_resume_text(data):
