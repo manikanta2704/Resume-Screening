@@ -1,10 +1,8 @@
 import pickle
 import streamlit as st
 import PyPDF2
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.exceptions import NotFittedError
 import re
+from sklearn.exceptions import NotFittedError
 
 # Load the saved TF-IDF vectorizer and Logistic Regression model
 with open('tfidf.pkl', 'rb') as tfidf_file:
@@ -13,18 +11,17 @@ with open('tfidf.pkl', 'rb') as tfidf_file:
 with open('clf.pkl', 'rb') as clf_file:
     clf = pickle.load(clf_file)
 
-# Function to preprocess text
+# Function to clean and preprocess text
 def preprocess_text(data):
-    data = re.sub(r'http\S+', '', data)  # Remove URLs
-    data = re.sub(r'RT|cc', '', data)  # Remove RT and cc
-    data = re.sub(r'#\S+', '', data)  # Remove hashtags
-    data = re.sub(r'@\S+', '', data)  # Remove mentions
-    data = data.lower()  # Convert to lowercase
-    data = re.sub(r'[^a-zA-Z0-9\s]', '', data)  # Remove special characters except spaces
-    data = re.sub(r'\s+', ' ', data)  # Replace multiple spaces with a single space
-    cleaned_text = data.lower()  # Convert to lowercase, remove special characters, etc.
-    return cleaned_text
-
+    data = re.sub(r'http\S+', ' ', data)                # Remove URLs
+    data = re.sub(r'RT|cc', ' ', data)                  # Remove RT and cc
+    data = re.sub(r'#\S+', ' ', data)                   # Remove hashtags
+    data = re.sub(r'@\S+', ' ', data)                   # Remove mentions
+    data = data.lower()                                 # Convert to lowercase
+    data = re.sub(r'[^a-zA-Z0-9\s]', ' ', data)         # Remove special characters
+    data = re.sub(r'\s+', ' ', data)                     # Replace multiple spaces with single space
+    data = data.strip()                                 # Strip leading/trailing whitespace
+    return data
 
 # Function to map category ID to category name
 def get_category_name(prediction_id):
@@ -70,8 +67,7 @@ def main():
         pdf_reader = PyPDF2.PdfReader(uploaded_file)
         resume_text = ""
         
-        for page_num in range(len(pdf_reader.pages)):
-            page = pdf_reader.pages[page_num]
+        for page in pdf_reader.pages:
             resume_text += page.extract_text()
 
         # Preprocess the resume text
