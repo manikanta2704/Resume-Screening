@@ -4,6 +4,7 @@ import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.exceptions import NotFittedError
+import re
 
 # Load the saved TF-IDF vectorizer and Logistic Regression model
 with open('tfidf.pkl', 'rb') as tfidf_file:
