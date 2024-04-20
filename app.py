@@ -1,21 +1,67 @@
-import pickle
 import streamlit as st
 import PyPDF2
+import re
+import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-import re
+from nltk.corpus import stopwords
 
 # Function to preprocess text
-def preprocess_text(text):
-    text = re.sub(r'http\S+', '', text)      # Remove URLs
-    text = re.sub(r'RT|cc', '', text)        # Remove RT and cc
-    text = re.sub(r'#\S+', '', text)         # Remove hashtags
-    text = re.sub(r'@\S+', '', text)         # Remove mentions
-    text = text.lower()                      # Convert to lowercase
-    text = re.sub(r'[^a-zA-Z0-9\s]', ' ', text)  # Remove special characters
-    text = re.sub(r'\s+', ' ', text)         # Replace multiple spaces with single space
-    text = text.strip()                      # Strip leading/trailing whitespace
-    return text
+def clean_resume(data):
+    """
+    Clean the input resume text by removing URLs, emails, special characters, and stopwords.
+    
+    :param data: The input text (resume)
+    :return: The cleaned text
+    """
+    # Remove URLs
+    data = re.sub(r'http\S+', '', data)
+    # Remove emails
+    data = re.sub(r'\S*@\S*\s?', '', data)
+    # Remove special characters
+    data = re.sub(r'[^a-zA-Z\s]', '', data)
+    # Convert to lowercase
+    data = data.lower()
+    # Remove stopwords
+    stop_words = set(stopwords.words('english'))
+    data = ' '.join(word for word in data.split() if word not in stop_words)
+    return data
+
+# Load the trained TF-IDF vectorizer and Logistic Regression classifier
+with open('tfidf.pkl', 'rb') as f:
+    tfidf_vectorizer = pickle.load(f)
+
+with open('clf.pkl', 'rb') as f:
+    clf = pickle.load(f)
+
+# Function to predict category
+def predict_category(resume_text):
+    """
+    Predict the category of the input resume text.
+    
+    :param resume_text: The input resume text
+    :return: The predicted category name
+    """
+    # Clean the resume text
+    cleaned_resume = clean_resume(resume_text)
+    # Transform the cleaned resume text using TF-IDF vectorizer
+    input_features = tfidf_vectorizer.transform([cleaned_resume])
+    # Make prediction using the loaded classifier
+    prediction_id = clf.predict(input_features)[0]
+    # Map category ID to category name
+    category_mapping = {
+        15: "Java Developer", 23: "Testing", 8: "DevOps Engineer",
+        20: "Python Developer", 24: "Web Designing", 12: "HR",
+        13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
+        18: "Operations Manager", 6: "Data Science", 22: "Sales",
+        16: "Mechanical Engineer", 1: "Arts", 7: "Database",
+        11: "Electrical Engineering", 14: "Health and Fitness",
+        19: "PMO", 4: "Business Analyst", 9: "DotNet Developer",
+        2: "Automation Testing", 17: "Network Security Engineer",
+        21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
+    }
+    predicted_category = category_mapping.get(prediction_id, "Unknown")
+    return predicted_category
 
 # Streamlit app
 def main():
@@ -25,35 +71,20 @@ def main():
     uploaded_file = st.file_uploader("Upload PDF", type=["pdf"])
 
     if uploaded_file is not None:
-        # Read and preprocess the uploaded PDF file
+        # Read PDF file and extract text
         pdf_reader = PyPDF2.PdfReader(uploaded_file)
         resume_text = ""
-        
-        for page_num in range(len(pdf_reader.pages)):
-            page = pdf_reader.pages[page_num]
+        for page in pdf_reader.pages:
             resume_text += page.extract_text()
 
-        # Preprocess the resume text
-        processed_resume_text = preprocess_text(resume_text)
+        st.write("Extracted Text from Resume:")
+        st.write(resume_text)
 
-        # Recreate and fit TF-IDF vectorizer
-        tfidf_vectorizer = TfidfVectorizer()
-        X_train = [processed_resume_text]  # Example: Use your training data here
-        tfidf_vectorizer.fit(X_train)
+        # Predict category
+        predicted_category = predict_category(resume_text)
 
-        # Recreate and fit Logistic Regression model
-        clf = LogisticRegression()
-        y_train = [0]  # Example: Use your training labels here
-        clf.fit(tfidf_vectorizer.transform(X_train), y_train)
-
-        # Save the models
-        with open('tfidf.pkl', 'wb') as tfidf_file:
-            pickle.dump(tfidf_vectorizer, tfidf_file)
-
-        with open('clf.pkl', 'wb') as clf_file:
-            pickle.dump(clf, clf_file)
-
-        st.success("Models saved successfully!")
+        # Display predicted category
+        st.success(f"Predicted Category: {predicted_category}")
 
 if __name__ == '__main__':
     main()
