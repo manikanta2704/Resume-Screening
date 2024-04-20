@@ -14,7 +14,6 @@ with open('clf.pkl', 'rb') as clf_file:
 
 # Function to preprocess text
 def preprocess_text(text):
-    def clean_resume_text(data):
     data = re.sub(r'http\S+', '', data)  # Remove URLs
     data = re.sub(r'RT|cc', '', data)  # Remove RT and cc
     data = re.sub(r'#\S+', '', data)  # Remove hashtags
