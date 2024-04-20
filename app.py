@@ -11,17 +11,18 @@ with open('tfidf.pkl', 'rb') as tfidf_file:
 with open('clf.pkl', 'rb') as clf_file:
     clf = pickle.load(clf_file)
 
-# Function to clean and preprocess text
-def preprocess_text(data):
-    data = re.sub(r'http\S+', ' ', data)                # Remove URLs
-    data = re.sub(r'RT|cc', ' ', data)                  # Remove RT and cc
-    data = re.sub(r'#\S+', ' ', data)                   # Remove hashtags
-    data = re.sub(r'@\S+', ' ', data)                   # Remove mentions
-    data = data.lower()                                 # Convert to lowercase
-    data = re.sub(r'[^a-zA-Z0-9\s]', ' ', data)         # Remove special characters
-    data = re.sub(r'\s+', ' ', data)                     # Replace multiple spaces with single space
-    data = data.strip()                                 # Strip leading/trailing whitespace
-    return data
+import re
+
+def preprocess_text(text):
+    text = re.sub(r'http\S+', '', text)      # Remove URLs
+    text = re.sub(r'RT|cc', '', text)        # Remove RT and cc
+    text = re.sub(r'#\S+', '', text)         # Remove hashtags
+    text = re.sub(r'@\S+', '', text)         # Remove mentions
+    text = text.lower()                      # Convert to lowercase
+    text = re.sub(r'[^a-zA-Z0-9\s]', ' ', text)  # Remove special characters
+    text = re.sub(r'\s+', ' ', text)         # Replace multiple spaces with single space
+    text = text.strip()                      # Strip leading/trailing whitespace
+    return text
 
 # Function to map category ID to category name
 def get_category_name(prediction_id):
