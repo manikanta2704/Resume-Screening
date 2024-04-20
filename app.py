@@ -5,7 +5,7 @@ import PyPDF2
 
 # Load the trained model and TF-IDF vectorizer
 word_vectorizer = pickle.load(open('tfidf.pkl', 'rb'))
-clf = pickle.load(open('clf.pkl', 'rb'))
+clf = pickle.load(open('clf.pkl.gz', 'rb'))
 
 # Function to clean resume text
 def clean_resume_text(data):
