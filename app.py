@@ -14,7 +14,7 @@ with open('clf.pkl', 'rb') as clf_file:
     clf = pickle.load(clf_file)
 
 # Function to preprocess text
-def preprocess_text(text):
+def preprocess_text(data):
     data = re.sub(r'http\S+', '', data)  # Remove URLs
     data = re.sub(r'RT|cc', '', data)  # Remove RT and cc
     data = re.sub(r'#\S+', '', data)  # Remove hashtags
@@ -22,7 +22,7 @@ def preprocess_text(text):
     data = data.lower()  # Convert to lowercase
     data = re.sub(r'[^a-zA-Z0-9\s]', '', data)  # Remove special characters except spaces
     data = re.sub(r'\s+', ' ', data)  # Replace multiple spaces with a single space
-    cleaned_text = text.lower()  # Convert to lowercase, remove special characters, etc.
+    cleaned_text = data.lower()  # Convert to lowercase, remove special characters, etc.
     return cleaned_text
 
 
