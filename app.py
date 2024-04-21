@@ -65,6 +65,23 @@ def main():
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
 
+            if st.button("Predict"):
+                input_features = tfidf_loaded.transform([cleaned_text])
+                prediction_id = clf_loaded.predict(input_features)[0]
+
+                category_mapping = {
+                    15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
+                    24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
+                    18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
+                    1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
+                    19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
+                    17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
+                }
+
+                predicted_category = category_mapping.get(prediction_id, "Unknown")
+                st.write("### Predicted Category:")
+                st.write(predicted_category)
+
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
