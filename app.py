@@ -60,7 +60,7 @@ def main():
             pdf_reader = PyPDF2.PdfReader(pdf_file)
             page_text = ""
             for page_num in range(len(pdf_reader.pages)):
-                page = pdf_reader.getPage(page_num)
+                page = pdf_reader.pages[page_number]
                 page_text += page.extract_text()
 
             st.write("### Extracted Text:")
