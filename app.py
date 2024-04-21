@@ -42,13 +42,17 @@ with open('clf.pkl', 'rb') as clf_file:
 
 # Main function to run the app
 def main():
-    # Set page configuration
-    st.set_page_config(
-        page_title="Resume Screening App",
-        page_icon=":clipboard:",  # Custom page icon
-        layout="wide",  # Wide layout with two columns
-        initial_sidebar_state="expanded",  # Expand sidebar by default
-        background_color="#f0f0f0"  # Set custom background color
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #f0f0f0; /* Set your desired background color */
+            color: #333; /* Set text color */
+            font-family: Arial, sans-serif; /* Set font family */
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
     )
 
     st.title("Resume Screening App")
