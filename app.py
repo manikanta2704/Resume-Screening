@@ -5,9 +5,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
 import nltk
+from sklearn.linear_model import LogisticRegression
 
 # Download NLTK stopwords data if not already downloaded
 nltk.download('stopwords')
+
+# Assuming X_train and y_train are your training data
+clf = LogisticRegression()
+clf.fit(X_train, y_train)
 
 # Load the TF-IDF vectorizer and Logistic Regression model
 with open('tfidf.pkl', 'rb') as tfidf_file:
