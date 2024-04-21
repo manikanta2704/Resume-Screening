@@ -12,7 +12,6 @@ import pickle
 import io
 
 
-
 # Load the saved TF-IDF vectorizer and classifier
 with open('tfidf.pkl', 'rb') as tfidf_file:
     tfidf_loaded = pickle.load(tfidf_file)
