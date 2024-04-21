@@ -42,19 +42,16 @@ with open('clf.pkl', 'rb') as clf_file:
 
 # Main function to run the app
 def main():
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #7FFFD4; /* Set your desired background color */
-            color: #333; /* Set text color */
-            font-family: Arial, sans-serif; /* Set font family */
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    custom_theme = {
+        "primaryColor": "#F63366",                # Accent color
+        "backgroundColor": "#FFFFFF",             # Background color
+        "secondaryBackgroundColor": "#F0F2F6",    # Sidebar background color
+        "textColor": "#262730",                   # Text color
+        "font": "sans serif"                      # Font style
+    }
 
+    # Set custom theme
+    st.set_theme(custom_theme)
     st.title("Resume Screening App")
 
     # Use sidebar to navigate between PDF and Text input
