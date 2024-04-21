@@ -63,13 +63,13 @@ def main():
                 page = pdf_reader.pages[page_num]
                 extracted_text += page.extract_text()
 
-            st.write("### Extracted Text:")
-            st.write(extracted_text)
+            #st.write("### Extracted Text:")
+            #st.write(extracted_text)
 
             if extracted_text:
                 cleaned_text = clean_text(extracted_text)
-                st.write("### Cleaned Text:")
-                st.write(cleaned_text)
+                #st.write("### Cleaned Text:")
+                #st.write(cleaned_text)
 
                 if st.button("Predict job role from PDF"):
                     tfidf_loaded, clf_loaded = load_models()
@@ -94,8 +94,8 @@ def main():
 
         # Automatically clean the text as the user types
         cleaned_text = clean_text(text_resume)
-        st.write("### Cleaned Text:")
-        st.write(cleaned_text)
+        #st.write("### Cleaned Text:")
+        #st.write(cleaned_text)
 
         if st.button("Predict Category from Text"):
             tfidf_loaded, clf_loaded = load_models()
