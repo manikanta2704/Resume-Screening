@@ -1,5 +1,7 @@
 import streamlit as st
-import PyPDF2
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
 import re
 
@@ -30,24 +32,16 @@ def clean_text(text):
 
     return clean_text
 
+# Load the trained TF-IDF vectorizer and logistic regression classifier
+with open('tfidf.pkl', 'rb') as tfidf_file:
+    tfidf_loaded = pickle.load(tfidf_file)
+
+with open('clf.pkl', 'rb') as clf_file:
+    clf_loaded = pickle.load(clf_file)
+
 # Main function to run the app
 def main():
     st.title("Resume Screening App")
-    st.markdown(
-        """
-        <style>
-        .reportview-container {
-            background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
-            color: white;
-        }
-        .sidebar .sidebar-content {
-            background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
 
     # Use sidebar to navigate between pages (PDF and Text)
     selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
@@ -75,9 +69,30 @@ def main():
         text_resume = st.text_area("Paste your text here", height=300)
 
         if st.button("Predict"):
+            # Clean the text
             cleaned_text = clean_text(text_resume)
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
+
+            # Vectorize the cleaned text
+            input_features = tfidf_loaded.transform([cleaned_text])
+
+            # Make predictions using the loaded classifier
+            prediction_id = clf_loaded.predict(input_features)[0]
+
+            # Map category ID to category name
+            category_mapping = {
+                15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
+                24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
+                18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
+                1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
+                19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
+                17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
+            }
+
+            predicted_category = category_mapping.get(prediction_id, "Unknown")
+            st.write("### Predicted Category:")
+            st.write(predicted_category)
 
 # Run the main function to start the app
 if __name__ == "__main__":
