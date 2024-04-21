@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
 import re
+import pyPDF2
 
 # Function to clean text
 def clean_text(text):
