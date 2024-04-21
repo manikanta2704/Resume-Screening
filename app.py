@@ -1,3 +1,45 @@
+import streamlit as st
+import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from nltk.corpus import stopwords
+import re
+import PyPDF2
+
+# Function to clean text
+def clean_text(text):
+    """
+    Clean the input text by removing URLs, emails, special characters, and stop words.
+
+    :param text: The string to be cleaned
+    :return: The cleaned string
+    """
+    # Compile patterns for URLs and emails to speed up cleaning process
+    url_pattern = re.compile(r'https?://\S+|www\.\S+')
+    email_pattern = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+
+    # Remove URLs
+    clean_text = url_pattern.sub('', text)
+
+    # Remove emails
+    clean_text = email_pattern.sub('', clean_text)
+
+    # Remove special characters (keeping only words and whitespace)
+    clean_text = re.sub(r'[^\w\s]', '', clean_text)
+
+    # Remove stop words by filtering the split words of the text
+    stop_words = set(stopwords.words('english'))
+    clean_text = ' '.join(word for word in clean_text.split() if word.lower() not in stop_words)
+
+    return clean_text
+
+# Load the trained TF-IDF vectorizer and logistic regression classifier
+with open('tfidf.pkl', 'rb') as tfidf_file:
+    tfidf_loaded = pickle.load(tfidf_file)
+
+with open('clf.pkl', 'rb') as clf_file:
+    clf_loaded = pickle.load(clf_file)
+
 def main():
     st.title("Resume Screening App")
 
