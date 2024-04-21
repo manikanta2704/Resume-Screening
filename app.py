@@ -46,30 +46,14 @@ def load_models():
     return tfidf_loaded, clf_loaded
 
 def main():
-    page_bg_img = f"""
-    <style>
-    [data-testid="stAppViewContainer"] > .main {{
-        background-image: url("image.jpg");
-        background-size: cover;
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-attachment: local;
-    }}
-    [data-testid="stHeader"] {{
-        background: rgba(0,0,0,0);
-    }}
-    </style>
-    """
-
-    # Apply CSS using st.markdown with unsafe_allow_html=True
-    st.markdown(page_bg_img, unsafe_allow_html=True)
-    st.title("Resume Screening App")
+    
+    st.title("Automated Resume Screening App")
 
     # Use sidebar to navigate between pages (PDF and Text)
     selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
 
     if selected_page == "PDF":
-        st.subheader("Upload PDF Resume")
+        st.subheader("Upload your Resume in .pdf format")
         pdf_file = st.file_uploader("Upload PDF", type=["pdf"])
 
         if pdf_file is not None:
@@ -87,7 +71,7 @@ def main():
                 st.write("### Cleaned Text:")
                 st.write(cleaned_text)
 
-                if st.button("Predict Category from PDF"):
+                if st.button("Predict job role from PDF"):
                     tfidf_loaded, clf_loaded = load_models()
                     input_features = tfidf_loaded.transform([cleaned_text])
                     prediction_id = clf_loaded.predict(input_features)[0]
@@ -102,8 +86,8 @@ def main():
                     }
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
-                    st.write("### Predicted Category:")
-                    st.write(predicted_category)
+                    st.write("### The Given Resume is best suited for the role of:")
+                    st.markdown(f"**<span style='color:green'>{predicted_category}</span>**", unsafe_allow_html=True)
 
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
