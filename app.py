@@ -7,6 +7,7 @@ import re
 import pickle
 
 # Function to clean text
+@st.cache
 def clean_text(text):
     """
     Clean the input text by removing URLs, emails, special characters, and stop words.
@@ -45,6 +46,25 @@ def load_models():
     return tfidf_loaded, clf_loaded
 
 def main():
+    # Define CSS for background image and header background color
+    page_bg_img = f"""
+    <style>
+    [data-testid="stAppViewContainer"] > .main {{
+        background-image: url("image.jpg");
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: local;
+    }}
+    [data-testid="stHeader"] {{
+        background: rgba(0,0,0,0);
+    }}
+    </style>
+    """
+
+    # Apply CSS using st.markdown with unsafe_allow_html=True
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+    
     st.title("Resume Screening App")
 
     # Use sidebar to navigate between pages (PDF and Text)
@@ -91,14 +111,12 @@ def main():
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
 
-        
+        # Automatically clean the text as the user types
         cleaned_text = clean_text(text_resume)
         st.write("### Cleaned Text:")
         st.write(cleaned_text)
 
         if st.button("Predict Category from Text"):
-            cleaned_text = clean_text(text_resume)
-
             tfidf_loaded, clf_loaded = load_models()
             input_features = tfidf_loaded.transform([cleaned_text])
             prediction_id = clf_loaded.predict(input_features)[0]
