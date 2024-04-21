@@ -63,7 +63,7 @@ def main():
                 page = pdf_reader.pages[page_num]
                 extracted_text += page.extract_text()
 
-            st.write("### Extracted Text:")
+            st.write("### Extracted Text from pdf:")
             st.write(extracted_text)
 
             if extracted_text:
@@ -87,10 +87,10 @@ def main():
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
                     # Display the formatted message with predicted category in streamlit
-                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:skyblue'>{predicted_category}</span></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
-        text_resume = st.text_area("Paste your text here", height=300)
+        text_resume = st.text_area("Paste your Resume text here", height=300)
 
         # Automatically clean the text as the user types
         cleaned_text = clean_text(text_resume)
