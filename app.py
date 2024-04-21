@@ -59,7 +59,7 @@ def main():
         if pdf_file is not None:
             pdf_reader = PyPDF2.PdfReader(pdf_file)
             page_text = ""
-            for page_num in range(pdf_reader.numPages):
+            for page_num in range(len(reader.pages)):
                 page = pdf_reader.getPage(page_num)
                 page_text += page.extract_text()
 
