@@ -5,8 +5,6 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
-# Download NLTK resources (stopwords) if not already downloaded
-nltk.download('stopwords')
 
 # Function to clean text
 def clean_text(text):
