@@ -1,15 +1,11 @@
 import streamlit as st
-import numpy as np
-import pandas as pd
 import re
 import nltk
 from nltk.corpus import stopwords
-from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+import pdfplumber
 import pickle
-import io
 
 
 # Load the saved TF-IDF vectorizer and classifier
@@ -61,37 +57,23 @@ def main():
     st.title("Resume Screening App")
 
     # Sidebar options
-    option = st.sidebar.selectbox("Choose Option", ["Upload Resume", "Enter Resume Text"])
+    option = st.sidebar.selectbox("Choose Option", ["Upload Resume (PDF)", "Enter Resume Text"])
 
-    if option == "Upload Resume":
-        uploaded_file = st.file_uploader("Upload your resume (PDF or TXT)", type=["pdf", "txt"])
+    if option == "Upload Resume (PDF)":
+        uploaded_file = st.file_uploader("Upload your resume (PDF)", type="pdf")
 
         if uploaded_file is not None:
             try:
-                # Read the uploaded file as bytes
-                file_bytes = uploaded_file.read()
-
-                # Attempt to decode as UTF-8
-                try:
-                    text = file_bytes.decode('utf-8')
-                except UnicodeDecodeError:
-                    # If UTF-8 decoding fails, attempt other common encodings
-                    decoded_text = None
-                    common_encodings = ['latin1', 'utf-16', 'iso-8859-1']
-                    for encoding in common_encodings:
-                        try:
-                            text = file_bytes.decode(encoding)
-                            break
-                        except UnicodeDecodeError:
-                            continue
-                    else:
-                        raise ValueError("Unable to decode the uploaded file using any common encoding.")
+                with pdfplumber.open(uploaded_file) as pdf:
+                    pdf_text = ""
+                    for page in pdf.pages:
+                        pdf_text += page.extract_text()
 
                 st.write("Resume Text:")
-                st.write(text)
+                st.write(pdf_text)
 
-                # Clean and predict on uploaded resume
-                cleaned_text = clean_text(text)
+                # Clean and predict on uploaded resume text
+                cleaned_text = clean_text(pdf_text)
                 input_features = tfidf_loaded.transform([cleaned_text])
                 prediction_id = clf_loaded.predict(input_features)[0]
                 predicted_category = category_mapping.get(prediction_id, "Unknown")
