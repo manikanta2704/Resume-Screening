@@ -87,7 +87,7 @@ def main():
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
                     # Display the formatted message with predicted category in streamlit
-                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:pink'>{predicted_category}</span></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:skyblue'>{predicted_category}</span></p>", unsafe_allow_html=True)
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
@@ -112,8 +112,7 @@ def main():
             }
 
             predicted_category = category_mapping.get(prediction_id, "Unknown")
-            st.write("### Predicted Category:")
-            st.write(predicted_category)
+            st.markdown(f"<p style='font-size:25px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
 # Run the main function to start the app
 if __name__ == "__main__":
