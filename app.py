@@ -57,7 +57,7 @@ def main():
         pdf_file = st.file_uploader("Upload PDF", type=["pdf"])
 
         if pdf_file is not None:
-            pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
             page_text = ""
             for page_num in range(pdf_reader.numPages):
                 page = pdf_reader.getPage(page_num)
