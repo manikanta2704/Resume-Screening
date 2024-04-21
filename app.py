@@ -11,8 +11,7 @@ from sklearn.metrics import accuracy_score
 import pickle
 import io
 
-# Download NLTK resources (stopwords) if not already downloaded
-nltk.download('stopwords')
+
 
 # Load the saved TF-IDF vectorizer and classifier
 with open('tfidf.pkl', 'rb') as tfidf_file:
