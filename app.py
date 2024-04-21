@@ -92,9 +92,9 @@ def main():
         text_resume = st.text_area("Paste your text here", height=300)
 
         
-            cleaned_text = clean_text(text_resume)
-            st.write("### Cleaned Text:")
-            st.write(cleaned_text)
+        cleaned_text = clean_text(text_resume)
+        st.write("### Cleaned Text:")
+        st.write(cleaned_text)
 
         if st.button("Predict Category from Text"):
             cleaned_text = clean_text(text_resume)
