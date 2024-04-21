@@ -1,10 +1,10 @@
 import streamlit as st
-import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
 import re
 import pickle
+import PyPDF2
 
 # Function to clean text
 def clean_text(text):
@@ -55,18 +55,13 @@ def main():
         pdf_file = st.file_uploader("Upload PDF", type=["pdf"])
 
         if pdf_file is not None:
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
-            page_text = ""
-            for page_num in range(len(pdf_reader.pages)):
-                page = pdf_reader.pages[page_num]
-                page_text += page.extract_text()
-
             st.write("### Extracted Text:")
-            st.write(page_text)
+            pdf_text = pdf_file.read().decode('utf-8', errors='ignore')
+            st.write(pdf_text)
 
-            cleaned_text = clean_text(page_text)
+            cleaned_text = clean_text(pdf_text)
 
-            if st.button("Predict Category from PDF"):
+            if st.button("Predict Category"):
                 tfidf_loaded, clf_loaded = load_models()
                 input_features = tfidf_loaded.transform([cleaned_text])
                 prediction_id = clf_loaded.predict(input_features)[0]
@@ -88,25 +83,28 @@ def main():
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
 
-        if st.button("Predict Category from Text"):
+        if st.button("Clean Text"):
             cleaned_text = clean_text(text_resume)
+            st.write("### Cleaned Text:")
+            st.write(cleaned_text)
 
-            tfidf_loaded, clf_loaded = load_models()
-            input_features = tfidf_loaded.transform([cleaned_text])
-            prediction_id = clf_loaded.predict(input_features)[0]
+            if st.button("Predict Category"):
+                tfidf_loaded, clf_loaded = load_models()
+                input_features = tfidf_loaded.transform([cleaned_text])
+                prediction_id = clf_loaded.predict(input_features)[0]
 
-            category_mapping = {
-                15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
-                24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
-                18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
-                1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
-                19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
-                17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
-            }
+                category_mapping = {
+                    15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
+                    24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
+                    18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
+                    1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
+                    19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
+                    17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
+                }
 
-            predicted_category = category_mapping.get(prediction_id, "Unknown")
-            st.write("### Predicted Category:")
-            st.write(predicted_category)
+                predicted_category = category_mapping.get(prediction_id, "Unknown")
+                st.write("### Predicted Category:")
+                st.write(predicted_category)
 
 # Run the main function to start the app
 if __name__ == "__main__":
