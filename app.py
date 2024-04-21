@@ -1,19 +1,7 @@
 import streamlit as st
-import re
-import nltk
+import PyPDF2
 from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-import pdfplumber
-import pickle
-
-
-# Load the saved TF-IDF vectorizer and classifier
-with open('tfidf.pkl', 'rb') as tfidf_file:
-    tfidf_loaded = pickle.load(tfidf_file)
-
-with open('clf.pkl', 'rb') as clf_file:
-    clf_loaded = pickle.load(clf_file)
+import re
 
 # Function to clean text
 def clean_text(text):
@@ -42,57 +30,55 @@ def clean_text(text):
 
     return clean_text
 
-# Define the category mapping
-category_mapping = {
-    15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
-    24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
-    18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
-    1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
-    19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
-    17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
-}
-
-# Define the Streamlit app
+# Main function to run the app
 def main():
     st.title("Resume Screening App")
+    st.markdown(
+        """
+        <style>
+        .reportview-container {
+            background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
+            color: white;
+        }
+        .sidebar .sidebar-content {
+            background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Sidebar options
-    option = st.sidebar.selectbox("Choose Option", ["Upload Resume (PDF)", "Enter Resume Text"])
+    # Use sidebar to navigate between pages (PDF and Text)
+    selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
 
-    if option == "Upload Resume (PDF)":
-        uploaded_file = st.file_uploader("Upload your resume (PDF)", type="pdf")
+    if selected_page == "PDF":
+        st.subheader("Upload PDF Resume")
+        pdf_file = st.file_uploader("Upload PDF", type=["pdf"])
 
-        if uploaded_file is not None:
-            try:
-                with pdfplumber.open(uploaded_file) as pdf:
-                    pdf_text = ""
-                    for page in pdf.pages:
-                        pdf_text += page.extract_text()
+        if pdf_file is not None:
+            pdf_reader = PyPDF2.PdfFileReader(pdf_file)
+            page_text = ""
+            for page_num in range(pdf_reader.numPages):
+                page = pdf_reader.getPage(page_num)
+                page_text += page.extract_text()
 
-                st.write("Resume Text:")
-                st.write(pdf_text)
+            st.write("### Extracted Text:")
+            st.write(page_text)
 
-                # Clean and predict on uploaded resume text
-                cleaned_text = clean_text(pdf_text)
-                input_features = tfidf_loaded.transform([cleaned_text])
-                prediction_id = clf_loaded.predict(input_features)[0]
-                predicted_category = category_mapping.get(prediction_id, "Unknown")
+            cleaned_text = clean_text(page_text)
+            st.write("### Cleaned Text:")
+            st.write(cleaned_text)
 
-                st.success(f"Predicted Category: {predicted_category}")
-
-            except Exception as e:
-                st.error(f"Error occurred: {e}")
-
-    elif option == "Enter Resume Text":
-        user_input = st.text_area("Enter your resume text here")
+    elif selected_page == "Text":
+        st.subheader("Enter Text Resume")
+        text_resume = st.text_area("Paste your text here", height=300)
 
         if st.button("Predict"):
-            cleaned_text = clean_text(user_input)
-            input_features = tfidf_loaded.transform([cleaned_text])
-            prediction_id = clf_loaded.predict(input_features)[0]
-            predicted_category = category_mapping.get(prediction_id, "Unknown")
+            cleaned_text = clean_text(text_resume)
+            st.write("### Cleaned Text:")
+            st.write(cleaned_text)
 
-            st.success(f"Predicted Category: {predicted_category}")
-
-if __name__ == '__main__':
+# Run the main function to start the app
+if __name__ == "__main__":
     main()
