@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -10,6 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 import pickle
+import io
 
 # Download NLTK resources (stopwords) if not already downloaded
 nltk.download('stopwords')
@@ -69,18 +69,39 @@ def main():
         uploaded_file = st.file_uploader("Upload your resume (PDF or TXT)", type=["pdf", "txt"])
 
         if uploaded_file is not None:
-            file_contents = uploaded_file.read()
-            text = file_contents.decode('utf-8')
-            st.write("Resume Text:")
-            st.write(text)
+            try:
+                # Read the uploaded file as bytes
+                file_bytes = uploaded_file.read()
 
-            # Clean and predict on uploaded resume
-            cleaned_text = clean_text(text)
-            input_features = tfidf_loaded.transform([cleaned_text])
-            prediction_id = clf_loaded.predict(input_features)[0]
-            predicted_category = category_mapping.get(prediction_id, "Unknown")
+                # Attempt to decode as UTF-8
+                try:
+                    text = file_bytes.decode('utf-8')
+                except UnicodeDecodeError:
+                    # If UTF-8 decoding fails, attempt other common encodings
+                    decoded_text = None
+                    common_encodings = ['latin1', 'utf-16', 'iso-8859-1']
+                    for encoding in common_encodings:
+                        try:
+                            text = file_bytes.decode(encoding)
+                            break
+                        except UnicodeDecodeError:
+                            continue
+                    else:
+                        raise ValueError("Unable to decode the uploaded file using any common encoding.")
 
-            st.success(f"Predicted Category: {predicted_category}")
+                st.write("Resume Text:")
+                st.write(text)
+
+                # Clean and predict on uploaded resume
+                cleaned_text = clean_text(text)
+                input_features = tfidf_loaded.transform([cleaned_text])
+                prediction_id = clf_loaded.predict(input_features)[0]
+                predicted_category = category_mapping.get(prediction_id, "Unknown")
+
+                st.success(f"Predicted Category: {predicted_category}")
+
+            except Exception as e:
+                st.error(f"Error occurred: {e}")
 
     elif option == "Enter Resume Text":
         user_input = st.text_area("Enter your resume text here")
@@ -95,4 +116,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
