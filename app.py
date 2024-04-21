@@ -46,7 +46,7 @@ def main():
         """
         <style>
         body {
-            background-color: #f0f0f0; /* Set your desired background color */
+            background-color: #7FFFD4; /* Set your desired background color */
             color: #333; /* Set text color */
             font-family: Arial, sans-serif; /* Set font family */
         }
