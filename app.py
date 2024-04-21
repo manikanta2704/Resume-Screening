@@ -24,7 +24,7 @@ def main():
 
             if st.button("Predict"):
                 input_features = tfidf_loaded.transform([cleaned_text])
-                prediction_id = clf_loaded.predict(input_features)[0]
+                prediction_id2 = clf_loaded.predict(input_features)[0]
 
                 category_mapping = {
                     15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
@@ -35,7 +35,7 @@ def main():
                     17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
                 }
 
-                predicted_category = category_mapping.get(prediction_id, "Unknown")
+                predicted_category = category_mapping.get(prediction_id2, "Unknown")
                 st.write("### Predicted Category:")
                 st.write(predicted_category)
 
