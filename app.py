@@ -44,6 +44,23 @@ with open('clf.pkl', 'rb') as clf_file:
 def main():
     st.title("Resume Screening App")
 
+    st.markdown(
+        """
+        <style>
+        .reportview-container {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem 2rem;
+        }
+        .sidebar .sidebar-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Use sidebar to navigate between pages (PDF and Text)
     selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
 
