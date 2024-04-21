@@ -1,11 +1,7 @@
 import streamlit as st
-import pickle
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-import nltk
+import PyPDF2  # Add this import statement
 from nltk.corpus import stopwords
 import re
-import PyPDF2
 
 # Function to clean text
 def clean_text(text):
@@ -34,13 +30,7 @@ def clean_text(text):
 
     return clean_text
 
-# Load the trained TF-IDF vectorizer and logistic regression classifier
-with open('tfidf.pkl', 'rb') as tfidf_file:
-    tfidf_loaded = pickle.load(tfidf_file)
-
-with open('clf.pkl', 'rb') as clf_file:
-    clf_loaded = pickle.load(clf_file)
-
+# Main function to run the app
 def main():
     st.title("Resume Screening App")
 
@@ -65,23 +55,6 @@ def main():
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
 
-            if st.button("Predict"):
-                input_features = tfidf_loaded.transform([cleaned_text])
-                prediction_id2 = clf_loaded.predict(input_features)[0]
-
-                category_mapping = {
-                    15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
-                    24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
-                    18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
-                    1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
-                    19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
-                    17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
-                }
-
-                predicted_category = category_mapping.get(prediction_id2, "Unknown")
-                st.write("### Predicted Category:")
-                st.write(predicted_category)
-
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
@@ -90,22 +63,6 @@ def main():
             cleaned_text = clean_text(text_resume)
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
-
-            input_features = tfidf_loaded.transform([cleaned_text])
-            prediction_id = clf_loaded.predict(input_features)[0]
-
-            category_mapping = {
-                15: "Java Developer", 23: "Testing", 8: "DevOps Engineer", 20: "Python Developer",
-                24: "Web Designing", 12: "HR", 13: "Hadoop", 3: "Blockchain", 10: "ETL Developer",
-                18: "Operations Manager", 6: "Data Science", 22: "Sales", 16: "Mechanical Engineer",
-                1: "Arts", 7: "Database", 11: "Electrical Engineering", 14: "Health and fitness",
-                19: "PMO", 4: "Business Analyst", 9: "DotNet Developer", 2: "Automation Testing",
-                17: "Network Security Engineer", 21: "SAP Developer", 5: "Civil Engineer", 0: "Advocate"
-            }
-
-            predicted_category = category_mapping.get(prediction_id, "Unknown")
-            st.write("### Predicted Category:")
-            st.write(predicted_category)
 
 # Run the main function to start the app
 if __name__ == "__main__":
