@@ -87,8 +87,7 @@ def main():
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
                     # Display the formatted message with predicted category in streamlit
-                    st.markdown(f"The Given Resume is best suited for the role of: <span style='color:skyblue'>{predicted_category}</span>", unsafe_allow_html=True)
-
+                    st.markdown(f"<p style='font-size:20px; font-weight:bold'>The Given Resume is best suited for the role of: <span style='color:skyblue'>{predicted_category}</span></p>", unsafe_allow_html=True)
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
