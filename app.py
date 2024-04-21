@@ -67,7 +67,7 @@ def main():
 
             input_features = tfidf_loaded.transform([cleaned_text])
 
-            if st.button("Predict Category"):
+            if st.button("Predict Category (PDF)", key="predict_pdf"):
                 prediction_id = clf_loaded.predict(input_features)[0]
 
                 category_mapping = {
@@ -87,14 +87,14 @@ def main():
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
 
-        if st.button("Predict Category"):
+        if st.button("Predict Category (Text)", key="predict_text"):
             cleaned_text = clean_text(text_resume)
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
 
             input_features = tfidf_loaded.transform([cleaned_text])
 
-            if st.button("Predict Category"):
+            if st.button("Predict Category (Text)", key="predict_category_text"):
                 prediction_id = clf_loaded.predict(input_features)[0]
 
                 category_mapping = {
