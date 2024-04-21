@@ -54,8 +54,7 @@ def main():
         """,
         unsafe_allow_html=True
     )
-
-    st.title("Resume Screening App")
+st.title("Resume Screening App")
 
     # Use sidebar to navigate between PDF and Text input
     selected_option = st.sidebar.radio("Select Option", ["PDF Upload", "Text Input"])
