@@ -66,7 +66,7 @@ def main():
 
             cleaned_text = clean_text(page_text)
 
-            if st.button("Predict"):
+            if st.button("Predict Category"):
                 tfidf_loaded, clf_loaded = load_models()
                 input_features = tfidf_loaded.transform([cleaned_text])
                 prediction_id = clf_loaded.predict(input_features)[0]
@@ -88,7 +88,7 @@ def main():
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
 
-        if st.button("Predict"):
+        if st.button("Predict Text"):
             cleaned_text = clean_text(text_resume)
 
             if st.button("Predict"):
