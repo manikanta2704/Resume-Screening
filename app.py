@@ -91,7 +91,7 @@ def main():
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your text here", height=300)
 
-        if st.button("Clean Text"):
+        
             cleaned_text = clean_text(text_resume)
             st.write("### Cleaned Text:")
             st.write(cleaned_text)
