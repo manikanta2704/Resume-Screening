@@ -44,23 +44,40 @@ with open('clf.pkl', 'rb') as clf_file:
 def main():
     st.title("Resume Screening App")
 
-    st.markdown(
-        """
-        <style>
-        .reportview-container {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 1rem 2rem;
-        }
-        .sidebar .sidebar-content {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    styles = """
+    <style>
+    body {
+        background-color: #f0f0f0; /* Light gray background */
+        color: #333; /* Dark text color */
+        padding: 20px; /* Add padding for content */
+    }
+    .content-container {
+        display: flex;
+        justify-content: space-between;
+    }
+    .left-panel {
+        flex: 1;
+        padding: 20px;
+        background-color: #e0e0e0; /* Light background color for left panel */
+        margin-right: 10px; /* Add margin between left and right panels */
+    }
+    .right-panel {
+        flex: 1;
+        padding: 20px;
+        background-color: #d3d3d3; /* Light background color for right panel */
+    }
+    </style>
+    """
 
+    # Render CSS styles
+    st.markdown(styles, unsafe_allow_html=True)
+
+    # Render content in left and right panels
+    st.write("<div class='content-container'>", unsafe_allow_html=True)
+    st.write("<div class='left-panel'>Left Panel Content (PDF)</div>", unsafe_allow_html=True)
+    st.write("<div class='right-panel'>Right Panel Content (Text)</div>", unsafe_allow_html=True)
+    st.write("</div>", unsafe_allow_html=True)
+    
     # Use sidebar to navigate between pages (PDF and Text)
     selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
 
