@@ -169,7 +169,7 @@ def main():
             if recommendations:
                 st.write("Job role recommendations:")
                 for job_role in recommendations:
-                    st.write(f"- <span style='color:Magenta'>{job_role}</span>", unsafe_allow_html=True)
+                    st.write(f"- <span style='color:#7FFFD4'>{job_role}</span>", unsafe_allow_html=True)
 
     elif selected_page == "Resume Score":
         st.subheader("Calculate Resume Similarity Score")
@@ -179,7 +179,7 @@ def main():
         if st.button("Calculate Resume Score"):
             tfidf_loaded, _ = load_models()
             similarity_score = calculate_resume_score(tfidf_loaded, job_description, resume_text)
-            st.write(f"### The chances of getting the above job is : {similarity_score * 100:.0f}%")
+            st.write(f"### The chances of getting the above job is :<span style='color:Cyan'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
 
     elif selected_page == "Compare 2 Resumes":
         st.subheader("Compare Two Resumes")
@@ -200,7 +200,8 @@ def main():
             if st.button("Compare Resumes"):
                 tfidf_loaded, _ = load_models()
                 similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
-                st.write(f"### The Similarity between the 2 Resumes is: {similarity_score * 100:.0f}%")
+                st.write(f"### The Similarity between the 2 Resumes is:<span style='color:Magenta'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
+
 
 # Run the main function to start the app
 if __name__ == "__main__":
