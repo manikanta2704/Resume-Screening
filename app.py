@@ -133,11 +133,11 @@ def main():
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
                     st.markdown(f"<p style='font-size:25px; font-weight:bold'>Predicted Category: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
-                   recommendations = get_job_recommendations(predicted_category)
-                   if recommendations:
-                        st.write("Job role recommendations:")
-                        for job_role in recommendations:
-                            st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
+                recommendations = get_job_recommendations(predicted_category)
+                if recommendations:
+                    st.write("Job role recommendations:")
+                    for job_role in recommendations:
+                        st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
 
 
     elif selected_page == "Text":
