@@ -130,7 +130,7 @@ def main():
                     }
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
-                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is suitable for the role of: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is best suited for the role of: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
                     recommendations = get_job_recommendations(predicted_category)
                     if recommendations:
@@ -163,7 +163,7 @@ def main():
             }
 
             predicted_category = category_mapping.get(prediction_id, "Unknown")
-            st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is suitable for the role of: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is best suited for the role of: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
             recommendations = get_job_recommendations(predicted_category)
             if recommendations:
