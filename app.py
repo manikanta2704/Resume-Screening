@@ -94,7 +94,7 @@ def main():
     st.title("Automated Resume Screening App")
 
     # Use sidebar to navigate between pages (PDF and Text)
-    selected_page = st.sidebar.radio("Navigate", ["PDF", "Text", "Resume Score", "Compare 2 Resumes"])
+    selected_page = st.sidebar.radio("Navigate", ["Resume Screening(PDF)", "Resume Screening(Text)", "Check Resume Score", "Compare 2 Resumes"])
 
     if selected_page == "PDF":
         st.subheader("Upload your Resume in .pdf format")
