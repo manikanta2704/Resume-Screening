@@ -10,7 +10,7 @@ import nltk
 nltk.download('stopwords')
 
 # Function to clean text
-@st.cache
+@st.cache_data()
 def clean_text(text):
     """
     Clean the input text by removing URLs, emails, special characters, and stop words.
