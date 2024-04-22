@@ -130,7 +130,7 @@ def main():
                     }
 
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
-                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>Predicted Category: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is suitable for the role of: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
                     recommendations = get_job_recommendations(predicted_category)
                     if recommendations:
@@ -163,7 +163,7 @@ def main():
             }
 
             predicted_category = category_mapping.get(prediction_id, "Unknown")
-            st.markdown(f"<p style='font-size:25px; font-weight:bold'>Predicted Category: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size:25px; font-weight:bold'>The given resume is suitable for the role of: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
             recommendations = get_job_recommendations(predicted_category)
             if recommendations:
@@ -179,7 +179,7 @@ def main():
         if st.button("Calculate Resume Score"):
             tfidf_loaded, _ = load_models()
             similarity_score = calculate_resume_score(tfidf_loaded, job_description, resume_text)
-            st.write(f"### Similarity Score : {similarity_score * 100:.0f}%")
+            st.write(f"### The chances of getting the above job is : {similarity_score * 100:.0f}%")
 
     elif selected_page == "Compare 2 Resumes":
         st.subheader("Compare Two Resumes")
@@ -200,7 +200,7 @@ def main():
             if st.button("Compare Resumes"):
                 tfidf_loaded, _ = load_models()
                 similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
-                st.write(f"### Similarity Score between Resumes: {similarity_score * 100:.0f}%")
+                st.write(f"### The Similarity between the 2 Resumes is: {similarity_score * 100:.0f}%")
 
 # Run the main function to start the app
 if __name__ == "__main__":
