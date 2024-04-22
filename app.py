@@ -3,11 +3,14 @@ import PyPDF2
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from nltk.corpus import stopwords
+from sklearn.metrics.pairwise import cosine_similarity
 import re
 import pickle
+import nltk
 
+nltk.download('stopwords')
 # Function to clean text
-@st.cache
+@st.cache_data()
 def clean_text(text):
     """
     Clean the input text by removing URLs, emails, special characters, and stop words.
@@ -33,6 +36,16 @@ def clean_text(text):
     cleaned_text = ' '.join(word for word in cleaned_text.split() if word.lower() not in stop_words)
 
     return cleaned_text
+
+def calculate_resume_score(tfidf_vectorizer, job_description, resume_text):
+    # Transform job description and resume text using TF-IDF vectorizer
+    job_desc_features = tfidf_vectorizer.transform([job_description])
+    resume_features = tfidf_vectorizer.transform([resume_text])
+
+    # Calculate cosine similarity between job description and resume
+    similarity_score = cosine_similarity(job_desc_features, resume_features)[0][0]
+
+    return similarity_score
 
 def load_models():
     # Load the trained TF-IDF vectorizer
@@ -77,15 +90,12 @@ def get_job_recommendations(category):
     
     return recommendations.get(category, [])
 
-    
-    return recommendations.get(category, [])
-
 def main():
     
     st.title("Automated Resume Screening App")
 
     # Use sidebar to navigate between pages (PDF and Text)
-    selected_page = st.sidebar.radio("Navigate", ["PDF", "Text"])
+    selected_page = st.sidebar.radio("Navigate", ["PDF", "Text", "Resume Score", "Compare 2 Resumes"])
 
     if selected_page == "PDF":
         st.subheader("Upload your Resume in .pdf format")
@@ -160,6 +170,27 @@ def main():
                 st.write("Job role recommendations:")
                 for job_role in recommendations:
                     st.write(f"- {job_role}")
+                    
+    elif selected_page == "Resume Score":
+        st.subheader("Calculate Resume Similarity Score")
+        job_description = st.text_area("Enter Job Description", height=200)
+        resume_text = st.text_area("Paste Resume Text to Compare", height=300)
+
+        if st.button("Calculate Resume Score"):
+            tfidf_loaded, _ = load_models()
+            similarity_score = calculate_resume_score(tfidf_loaded, job_description, resume_text)
+            st.write(f"### Similarity Score: {similarity_score:.2f}")
+
+    elif selected_page == "Compare 2 Resumes":
+        st.subheader("Compare Two Resumes")
+        resume_text1 = st.text_area("Paste Resume Text 1", height=300)
+        resume_text2 = st.text_area("Paste Resume Text 2", height=300)
+
+        if st.button("Compare Resumes"):
+            tfidf_loaded, _ = load_models()
+            similarity_score = calculate_resume_score(tfidf_loaded, resume_text1, resume_text2)
+            st.write(f"### Similarity Score between Resumes: {similarity_score:.2f}")
+
 
 # Run the main function to start the app
 if __name__ == "__main__":
