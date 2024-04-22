@@ -60,35 +60,35 @@ def load_models():
 
 def get_job_recommendations(category):
     recommendations = {
-        "Data Science": ["Data Analyst", "Data Scientist", "Power BI Analyst", "Data Associate"],
-        "Java Developer": ["Senior Java Developer", "Java Software Engineer", "Backend Developer"],
-        "Testing": ["QA Engineer", "Software Tester", "Automation Test Engineer"],
-        "DevOps Engineer": ["DevOps Specialist", "Cloud Engineer", "Site Reliability Engineer"],
-        "Python Developer": ["Python Software Developer", "Python Engineer", "Full Stack Developer"],
-        "Web Designing": ["UI/UX Designer", "Frontend Developer", "Web Developer"],
-        "HR": ["HR Manager", "Talent Acquisition Specialist", "HR Business Partner"],
-        "Hadoop": ["Big Data Engineer", "Hadoop Developer", "Data Engineer"],
-        "Blockchain": ["Blockchain Developer", "Smart Contract Developer", "Crypto Engineer"],
-        "ETL Developer": ["ETL Specialist", "Data Integration Engineer", "Database Developer"],
-        "Operations Manager": ["Operations Director", "Operations Analyst", "Business Operations Manager"],
-        "Sales": ["Sales Executive", "Business Development Manager", "Sales Operations Specialist"],
-        "Mechanical Engineer": ["Mechanical Design Engineer", "Manufacturing Engineer", "Quality Engineer"],
-        "Arts": ["Art Director", "Graphic Designer", "Creative Consultant"],
-        "Database": ["Database Administrator", "Database Analyst", "Database Architect"],
-        "Electrical Engineering": ["Electrical Design Engineer", "Power Systems Engineer", "Embedded Systems Engineer"],
-        "Health and fitness": ["Fitness Trainer", "Health Coach", "Nutrition Specialist"],
-        "PMO": ["Project Manager", "Program Management Officer", "Project Coordinator"],
-        "Business Analyst": ["Business Systems Analyst", "Financial Analyst", "Market Research Analyst"],
-        "DotNet Developer": [".NET Software Developer", "C# Developer", "ASP.NET Developer"],
-        "Automation Testing": ["Automation Engineer", "Quality Assurance Analyst", "Test Automation Specialist"],
-        "Network Security Engineer": ["Cybersecurity Engineer", "Network Analyst", "Information Security Specialist"],
-        "SAP Developer": ["SAP Consultant", "SAP ABAP Developer", "SAP Basis Administrator"],
-        "Civil Engineer": ["Civil Design Engineer", "Structural Engineer", "Construction Manager"],
-        "Advocate": ["Legal Counsel", "Legal Advisor", "Attorney"]
-        # Add more categories and corresponding job recommendations as needed
+        "Java Developer": ["Senior Java Developer","Java Software Engineer","Backend Developer","Java Full Stack Developer","Java Architect"],
+        "Testing": ["QA Engineer","Software Tester","Automation Test Engineer","Performance Test Engineer","Quality Assurance Manager"],
+        "DevOps Engineer": ["DevOps Specialist","Cloud DevOps Engineer","Site Reliability Engineer (SRE)","DevOps Automation Engineer","Infrastructure Engineer"],
+        "Python Developer": ["Python Software Engineer","Django Developer","Python Full Stack Developer","Data Engineer (Python)","Python Automation Engineer"],
+        "Web Designing": ["Frontend Web Developer","UI/UX Designer","Web Graphic Designer","Web Development Team Lead","Web Design Manager"],
+        "HR": ["Human Resources Manager","Talent Acquisition Specialist","HR Business Partner","HR Generalist","Compensation and Benefits Analyst"],
+        "Hadoop": ["Big Data Engineer (Hadoop)","Hadoop Administrator","Hadoop Developer","Hadoop Architect","Hadoop Data Analyst"],
+        "Blockchain": ["Blockchain Developer","Blockchain Architect","Blockchain Engineer","Blockchain Consultant","Smart Contract Developer"],
+        "ETL Developer": ["ETL Specialist","Data Integration Developer","ETL Architect","Data Warehouse Developer","Informatica Developer"],
+        "Operations Manager": ["Operations Director","Business Operations Manager","Operations Analyst","Operations Team Lead","Supply Chain Manager"],
+        "Data Science": ["Data Scientist","Machine Learning Engineer","Data Analyst","AI Research Scientist","Data Engineer (Data Science)"],
+        "Sales": ["Sales Manager","Account Executive","Business Development Representative","Sales Operations Analyst","Inside Sales Representative"],
+        "Mechanical Engineer": ["Mechanical Design Engineer","Automotive Engineer","HVAC Engineer","Manufacturing Engineer","Robotics Engineer"],
+        "Arts": ["Art Director","Graphic Designer","Creative Director","Multimedia Artist","Visual Development Artist"],
+        "Database": ["Database Administrator (DBA)","SQL Developer","Database Architect","Data Warehouse Analyst","Database Engineer"],
+        "Electrical Engineering": ["Electrical Design Engineer","Power Systems Engineer","Electronics Engineer","Control Systems Engineer","Embedded Systems Engineer"],
+        "Health and fitness": ["Fitness Instructor","Personal Trainer","Nutritionist","Physical Therapist","Wellness Coach"],
+        "PMO": ["Project Manager","Program Management Office Lead","PMO Analyst","Portfolio Manager","PMO Director"],
+        "Business Analyst": ["Business Systems Analyst","Financial Analyst","Product Analyst","Business Process Analyst","Data Analyst (Business)"],
+        "DotNet Developer": [".NET Developer","C# Developer","ASP.NET Developer","Full Stack .NET Developer","Backend .NET Developer"],
+        "Automation Testing": ["Test Automation Engineer","Quality Assurance Automation Engineer","Selenium Test Engineer","API Test Automation Engineer","Test Automation Architect"],
+        "Network Security Engineer": ["Cyber Security Engineer","Information Security Analyst","Network Security Administrator","Security Operations Center (SOC) Analyst","Penetration Tester"],
+        "SAP Developer": ["SAP ABAP Developer","SAP Fiori Developer","SAP Basis Administrator","SAP Functional Consultant", "SAP HANA Developer"],
+        "Civil Engineer": ["Structural Engineer","Construction Project Manager","Geotechnical Engineer","Transportation Engineer","Environmental Engineer"],
+        "Advocate": ["Lawyer","Legal Counsel","Attorney","Legal Advisor","Corporate Counsel"]
     }
-    
+
     return recommendations.get(category, [])
+
 
 def main():
     
