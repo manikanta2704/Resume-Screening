@@ -200,7 +200,7 @@ def main():
             if st.button("Compare Resumes"):
                 tfidf_loaded, _ = load_models()
                 similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
-                st.write(f"### The Similarity between the 2 Resumes is:<span style='color:Magenta'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
+                st.write(f"### The Similarity between the 2 Resumes is: <span style='color:Magenta'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
 
 
 # Run the main function to start the app
