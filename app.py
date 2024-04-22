@@ -113,7 +113,7 @@ def main():
             if extracted_text:
                 cleaned_text = clean_text(extracted_text)
                 st.write("### Cleaned Text:")
-                st.write(f"- <span style='color:#9AFEFF'>{cleaned_text}</span>", unsafe_allow_html=True)
+                st.write(f"- <span style='color:#50C878'>{cleaned_text}</span>", unsafe_allow_html=True)
 
                 if st.button("Predict job role from PDF"):
                     tfidf_loaded, clf_loaded = load_models()
@@ -145,7 +145,7 @@ def main():
         # Automatically clean the text as the user types
         cleaned_text = clean_text(text_resume)
         st.write("### Cleaned Text:")
-        st.write(f"- <span style='color:#93FFE8'>{cleaned_text}</span>", unsafe_allow_html=True)
+        st.write(f"- <span style='color:#50C878'>{cleaned_text}</span>", unsafe_allow_html=True)
         
 
         if st.button("Predict Category from Text"):
