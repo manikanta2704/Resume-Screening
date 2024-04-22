@@ -169,7 +169,7 @@ def main():
             if recommendations:
                 st.write("Job role recommendations:")
                 for job_role in recommendations:
-                    st.write(f"- <span style='color:#7FFFD4'>{job_role}</span>", unsafe_allow_html=True)
+                    st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
 
     elif selected_page == "Resume Score":
         st.subheader("Calculate Resume Similarity Score")
