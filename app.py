@@ -96,7 +96,7 @@ def main():
     # Use sidebar to navigate between pages (PDF and Text)
     selected_page = st.sidebar.radio("Navigate", ["Resume Screening(PDF)", "Resume Screening(Text)", "Check Resume Score", "Compare 2 Resumes"])
 
-    if selected_page == "PDF":
+    if selected_page == "Resume Screening(PDF)":
         st.subheader("Upload your Resume in .pdf format")
         pdf_file = st.file_uploader("Upload PDF", type=["pdf"])
 
@@ -138,7 +138,7 @@ def main():
                         for job_role in recommendations:
                             st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
 
-    elif selected_page == "Text":
+    elif selected_page == "Resume Screening(Text)":
         st.subheader("Enter Text Resume")
         text_resume = st.text_area("Paste your Resume text here", height=300)
 
@@ -171,7 +171,7 @@ def main():
                 for job_role in recommendations:
                     st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
 
-    elif selected_page == "Resume Score":
+    elif selected_page == "Check Resume Score":
         st.subheader("Calculate Resume Similarity Score")
         job_description = st.text_area("Enter Job Description", height=200)
         resume_text = st.text_area("Paste Resume Text to Compare", height=300)
