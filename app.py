@@ -5,6 +5,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
 import re
 import pickle
+import nltk
+
+nltk.download('stopwords')
 
 # Function to clean text
 @st.cache
