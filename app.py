@@ -9,8 +9,9 @@ import pickle
 import nltk
 
 nltk.download('stopwords')
+
 # Function to clean text
-@st.cache_data()
+@st.cache(suppress_st_warning=True)
 def clean_text(text):
     """
     Clean the input text by removing URLs, emails, special characters, and stop words.
@@ -60,38 +61,36 @@ def load_models():
 
 def get_job_recommendations(category):
     recommendations = {
-        "Java Developer": ["Senior Java Developer","Java Software Engineer","Backend Developer","Java Full Stack Developer","Java Architect"],
-        "Testing": ["QA Engineer","Software Tester","Automation Test Engineer","Performance Test Engineer","Quality Assurance Manager"],
-        "DevOps Engineer": ["DevOps Specialist","Cloud DevOps Engineer","Site Reliability Engineer (SRE)","DevOps Automation Engineer","Infrastructure Engineer"],
-        "Python Developer": ["Python Software Engineer","Django Developer","Python Full Stack Developer","Data Engineer (Python)","Python Automation Engineer"],
-        "Web Designing": ["Frontend Web Developer","UI/UX Designer","Web Graphic Designer","Web Development Team Lead","Web Design Manager"],
-        "HR": ["Human Resources Manager","Talent Acquisition Specialist","HR Business Partner","HR Generalist","Compensation and Benefits Analyst"],
-        "Hadoop": ["Big Data Engineer (Hadoop)","Hadoop Administrator","Hadoop Developer","Hadoop Architect","Hadoop Data Analyst"],
-        "Blockchain": ["Blockchain Developer","Blockchain Architect","Blockchain Engineer","Blockchain Consultant","Smart Contract Developer"],
-        "ETL Developer": ["ETL Specialist","Data Integration Developer","ETL Architect","Data Warehouse Developer","Informatica Developer"],
-        "Operations Manager": ["Operations Director","Business Operations Manager","Operations Analyst","Operations Team Lead","Supply Chain Manager"],
-        "Data Science": ["Data Scientist","Machine Learning Engineer","Data Analyst","AI Research Scientist","Data Engineer (Data Science)"],
-        "Sales": ["Sales Manager","Account Executive","Business Development Representative","Sales Operations Analyst","Inside Sales Representative"],
-        "Mechanical Engineer": ["Mechanical Design Engineer","Automotive Engineer","HVAC Engineer","Manufacturing Engineer","Robotics Engineer"],
-        "Arts": ["Art Director","Graphic Designer","Creative Director","Multimedia Artist","Visual Development Artist"],
-        "Database": ["Database Administrator (DBA)","SQL Developer","Database Architect","Data Warehouse Analyst","Database Engineer"],
-        "Electrical Engineering": ["Electrical Design Engineer","Power Systems Engineer","Electronics Engineer","Control Systems Engineer","Embedded Systems Engineer"],
-        "Health and fitness": ["Fitness Instructor","Personal Trainer","Nutritionist","Physical Therapist","Wellness Coach"],
-        "PMO": ["Project Manager","Program Management Office Lead","PMO Analyst","Portfolio Manager","PMO Director"],
-        "Business Analyst": ["Business Systems Analyst","Financial Analyst","Product Analyst","Business Process Analyst","Data Analyst (Business)"],
-        "DotNet Developer": [".NET Developer","C# Developer","ASP.NET Developer","Full Stack .NET Developer","Backend .NET Developer"],
-        "Automation Testing": ["Test Automation Engineer","Quality Assurance Automation Engineer","Selenium Test Engineer","API Test Automation Engineer","Test Automation Architect"],
-        "Network Security Engineer": ["Cyber Security Engineer","Information Security Analyst","Network Security Administrator","Security Operations Center (SOC) Analyst","Penetration Tester"],
-        "SAP Developer": ["SAP ABAP Developer","SAP Fiori Developer","SAP Basis Administrator","SAP Functional Consultant", "SAP HANA Developer"],
-        "Civil Engineer": ["Structural Engineer","Construction Project Manager","Geotechnical Engineer","Transportation Engineer","Environmental Engineer"],
-        "Advocate": ["Lawyer","Legal Counsel","Attorney","Legal Advisor","Corporate Counsel"]
+        "Java Developer": ["Senior Java Developer", "Java Software Engineer", "Backend Developer", "Java Full Stack Developer", "Java Architect"],
+        "Testing": ["QA Engineer", "Software Tester", "Automation Test Engineer", "Performance Test Engineer", "Quality Assurance Manager"],
+        "DevOps Engineer": ["DevOps Specialist", "Cloud DevOps Engineer", "Site Reliability Engineer (SRE)", "DevOps Automation Engineer", "Infrastructure Engineer"],
+        "Python Developer": ["Python Software Engineer", "Django Developer", "Python Full Stack Developer", "Data Engineer (Python)", "Python Automation Engineer"],
+        "Web Designing": ["Frontend Web Developer", "UI/UX Designer", "Web Graphic Designer", "Web Development Team Lead", "Web Design Manager"],
+        "HR": ["Human Resources Manager", "Talent Acquisition Specialist", "HR Business Partner", "HR Generalist", "Compensation and Benefits Analyst"],
+        "Hadoop": ["Big Data Engineer (Hadoop)", "Hadoop Administrator", "Hadoop Developer", "Hadoop Architect", "Hadoop Data Analyst"],
+        "Blockchain": ["Blockchain Developer", "Blockchain Architect", "Blockchain Engineer", "Blockchain Consultant", "Smart Contract Developer"],
+        "ETL Developer": ["ETL Specialist", "Data Integration Developer", "ETL Architect", "Data Warehouse Developer", "Informatica Developer"],
+        "Operations Manager": ["Operations Director", "Business Operations Manager", "Operations Analyst", "Operations Team Lead", "Supply Chain Manager"],
+        "Data Science": ["Data Scientist", "Machine Learning Engineer", "Data Analyst", "AI Research Scientist", "Data Engineer (Data Science)"],
+        "Sales": ["Sales Manager", "Account Executive", "Business Development Representative", "Sales Operations Analyst", "Inside Sales Representative"],
+        "Mechanical Engineer": ["Mechanical Design Engineer", "Automotive Engineer", "HVAC Engineer", "Manufacturing Engineer", "Robotics Engineer"],
+        "Arts": ["Art Director", "Graphic Designer", "Creative Director", "Multimedia Artist", "Visual Development Artist"],
+        "Database": ["Database Administrator (DBA)", "SQL Developer", "Database Architect", "Data Warehouse Analyst", "Database Engineer"],
+        "Electrical Engineering": ["Electrical Design Engineer", "Power Systems Engineer", "Electronics Engineer", "Control Systems Engineer", "Embedded Systems Engineer"],
+        "Health and fitness": ["Fitness Instructor", "Personal Trainer", "Nutritionist", "Physical Therapist", "Wellness Coach"],
+        "PMO": ["Project Manager", "Program Management Office Lead", "PMO Analyst", "Portfolio Manager", "PMO Director"],
+        "Business Analyst": ["Business Systems Analyst", "Financial Analyst", "Product Analyst", "Business Process Analyst", "Data Analyst (Business)"],
+        "DotNet Developer": [".NET Developer", "C# Developer", "ASP.NET Developer", "Full Stack .NET Developer", "Backend .NET Developer"],
+        "Automation Testing": ["Test Automation Engineer", "Quality Assurance Automation Engineer", "Selenium Test Engineer", "API Test Automation Engineer", "Test Automation Architect"],
+        "Network Security Engineer": ["Cyber Security Engineer", "Information Security Analyst", "Network Security Administrator", "Security Operations Center (SOC) Analyst", "Penetration Tester"],
+        "SAP Developer": ["SAP ABAP Developer", "SAP Fiori Developer", "SAP Basis Administrator", "SAP Functional Consultant", "SAP HANA Developer"],
+        "Civil Engineer": ["Structural Engineer", "Construction Project Manager", "Geotechnical Engineer", "Transportation Engineer", "Environmental Engineer"],
+        "Advocate": ["Lawyer", "Legal Counsel", "Attorney", "Legal Advisor", "Corporate Counsel"]
     }
 
     return recommendations.get(category, [])
 
-
 def main():
-    
     st.title("Automated Resume Screening App")
 
     # Use sidebar to navigate between pages (PDF and Text)
@@ -108,7 +107,7 @@ def main():
                 page = pdf_reader.pages[page_num]
                 extracted_text += page.extract_text()
 
-            st.write("### Extracted Text from pdf:")
+            st.write("### Extracted Text from PDF:")
             st.write(extracted_text)
 
             if extracted_text:
@@ -133,12 +132,11 @@ def main():
                     predicted_category = category_mapping.get(prediction_id, "Unknown")
                     st.markdown(f"<p style='font-size:25px; font-weight:bold'>Predicted Category: <span style='color:orange'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
-                recommendations = get_job_recommendations(predicted_category)
-                if recommendations:
-                    st.write("Job role recommendations:")
-                    for job_role in recommendations:
-                        st.write(f"- <span style='color:cyan'>{job_role}</span>", unsafe_allow_html=True)
-
+                    recommendations = get_job_recommendations(predicted_category)
+                    if recommendations:
+                        st.write("Job role recommendations:")
+                        for job_role in recommendations:
+                            st.write(f"- {job_role}")
 
     elif selected_page == "Text":
         st.subheader("Enter Text Resume")
@@ -166,12 +164,12 @@ def main():
             predicted_category = category_mapping.get(prediction_id, "Unknown")
             st.markdown(f"<p style='font-size:25px; font-weight:bold'>Predicted Category: <span style='color:lightgreen'>{predicted_category}</span></p>", unsafe_allow_html=True)
 
-        recommendations = get_job_recommendations(predicted_category)
-        if recommendations:
-            st.write("Job role recommendations:")
-            for job_role in recommendations:
-                st.write(f"- <span style='color:Magenta'>{job_role}</span>", unsafe_allow_html=True)
-                    
+            recommendations = get_job_recommendations(predicted_category)
+            if recommendations:
+                st.write("Job role recommendations:")
+                for job_role in recommendations:
+                    st.write(f"- {job_role}")
+
     elif selected_page == "Resume Score":
         st.subheader("Calculate Resume Similarity Score")
         job_description = st.text_area("Enter Job Description", height=200)
@@ -180,7 +178,7 @@ def main():
         if st.button("Calculate Resume Score"):
             tfidf_loaded, _ = load_models()
             similarity_score = calculate_resume_score(tfidf_loaded, job_description, resume_text)
-            st.write(f"### Similarity Score : <span style='color:Cyan'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
+            st.write(f"### Similarity Score : {similarity_score * 100:.0f}%")
 
     elif selected_page == "Compare 2 Resumes":
         st.subheader("Compare Two Resumes")
@@ -201,9 +199,7 @@ def main():
             if st.button("Compare Resumes"):
                 tfidf_loaded, _ = load_models()
                 similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
-                st.write(f"### Similarity Score between Resumes: <span style='color:Magenta'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
-
-
+                st.write(f"### Similarity Score between Resumes: {similarity_score * 100:.0f}%")
 
 # Run the main function to start the app
 if __name__ == "__main__":
