@@ -183,13 +183,25 @@ def main():
 
     elif selected_page == "Compare 2 Resumes":
         st.subheader("Compare Two Resumes")
-        resume_text1 = st.text_area("Paste Resume Text 1", height=300)
-        resume_text2 = st.text_area("Paste Resume Text 2", height=300)
+        uploaded_file1 = st.file_uploader("Upload Resume 1 (PDF)", type=["pdf"])
+        uploaded_file2 = st.file_uploader("Upload Resume 2 (PDF)", type=["pdf"])
 
-        if st.button("Compare Resumes"):
-            tfidf_loaded, _ = load_models()
-            similarity_score = calculate_resume_score(tfidf_loaded, resume_text1, resume_text2)
-            st.write(f"### Similarity Score between Resumes: {similarity_score:.2f}")
+        if uploaded_file1 is not None and uploaded_file2 is not None:
+            resume_texts = []
+            for uploaded_file in [uploaded_file1, uploaded_file2]:
+                pdf_reader = PyPDF2.PdfReader(uploaded_file)
+                extracted_text = ""
+                for page_num in range(len(pdf_reader.pages)):
+                    page = pdf_reader.pages[page_num]
+                    extracted_text += page.extract_text()
+                cleaned_text = clean_text(extracted_text)
+                resume_texts.append(cleaned_text)
+
+            if st.button("Compare Resumes"):
+                tfidf_loaded, _ = load_models()
+                similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
+                st.write(f"### Similarity Score between Resumes: {similarity_score:.2f}")
+
 
 
 # Run the main function to start the app
