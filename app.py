@@ -179,7 +179,7 @@ def main():
         if st.button("Calculate Resume Score"):
             tfidf_loaded, _ = load_models()
             similarity_score = calculate_resume_score(tfidf_loaded, job_description, resume_text)
-            st.write(f"### Similarity Score: {similarity_score:.2f}")
+            st.write(f"### Similarity Score : <span style='color:lightpink'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
 
     elif selected_page == "Compare 2 Resumes":
         st.subheader("Compare Two Resumes")
@@ -200,7 +200,7 @@ def main():
             if st.button("Compare Resumes"):
                 tfidf_loaded, _ = load_models()
                 similarity_score = calculate_resume_score(tfidf_loaded, resume_texts[0], resume_texts[1])
-                st.write(f"### Similarity Score between Resumes: {similarity_score:.2f}")
+                st.write(f"### Similarity Score between Resumes: <span style='color:purple'>{similarity_score * 100:.0f}%</span>", unsafe_allow_html=True)
 
 
 
